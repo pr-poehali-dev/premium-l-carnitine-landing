@@ -65,7 +65,7 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="py-20 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -259,7 +259,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="order-form" className="py-20 bg-gradient-to-b from-gray-50 to-white">
+      <section id="order-form" className="py-20 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12">
@@ -328,10 +328,10 @@ const Index = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
+                  <div className="bg-purple-50 border border-purple-100 rounded-lg p-4">
                     <div className="flex items-start gap-3">
-                      <Icon name="Info" size={20} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                      <div className="text-sm text-blue-900">
+                      <Icon name="Info" size={20} className="text-purple-600 flex-shrink-0 mt-0.5" />
+                      <div className="text-sm text-purple-900">
                         <div className="font-semibold mb-1">Бесплатная доставка по всей России</div>
                         <div>После оформления заказа мы свяжемся с вами для подтверждения</div>
                       </div>

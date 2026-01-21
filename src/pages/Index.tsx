@@ -93,11 +93,38 @@ const Index = () => {
             </div>
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
-              <img 
-                src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/files/a991df1d-5630-45a2-9ea6-ac058acf7427.jpg"
-                alt="L-Карнитин PharmExpert 120 капсул"
-                className="relative w-full rounded-2xl shadow-2xl"
-              />
+              <div className="relative grid grid-cols-3 gap-4">
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/05e3950f-afa6-4d20-b683-bc378ebdd17a.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/b574e11d-ee86-4b6f-8ae7-c2809900c8b1.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/418df7d7-6dfd-42df-a442-d9779882d80e.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/ff4e4fbf-08a5-44f9-816d-081009bf3d4a.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/0dfcd5fe-fcc9-4c31-972f-87f7d3fb8aa4.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/15981a25-0160-4110-bf75-26fdf0087250.png"
+                  alt="L-Карнитин PharmExpert"
+                  className="w-full rounded-2xl shadow-lg hover:scale-105 transition-transform"
+                />
+              </div>
             </div>
           </div>
         </div>

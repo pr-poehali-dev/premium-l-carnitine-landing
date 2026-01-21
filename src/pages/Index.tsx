@@ -68,42 +68,42 @@ const Index = () => {
       <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-semibold">
+            <div className="space-y-6 animate-fade-in">
+              <div className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-semibold animate-fade-in hover:scale-105 transition-transform">
                 Напрямую от производителя
               </div>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
+              <h1 className="text-5xl lg:text-6xl font-bold leading-tight animate-fade-in" style={{animationDelay: '0.1s'}}>
                 L-Карнитин премиум качества
               </h1>
-              <p className="text-xl text-gray-600">
+              <p className="text-xl text-gray-600 animate-fade-in" style={{animationDelay: '0.2s'}}>
                 Покупайте выгоднее, чем на маркетплейсах. <span className="font-semibold text-secondary">Бесплатная доставка</span> по всей России.
               </p>
-              <div className="flex flex-wrap gap-4 text-sm">
-                <div className="flex items-center gap-2">
+              <div className="flex flex-wrap gap-4 text-sm animate-fade-in" style={{animationDelay: '0.3s'}}>
+                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
                   <Icon name="Check" size={20} className="text-secondary" />
                   <span>850 мг в порции</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
                   <Icon name="Check" size={20} className="text-secondary" />
                   <span>120 капсул</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
                   <Icon name="Check" size={20} className="text-secondary" />
                   <span>Без ГМО</span>
                 </div>
               </div>
-              <div className="pt-4">
-                <div className="text-4xl font-bold text-primary mb-2">1 990 ₽</div>
+              <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
+                <div className="text-4xl font-bold text-primary mb-2 hover:scale-105 transition-transform inline-block">1 990 ₽</div>
                 <div className="text-gray-500 line-through text-lg">2 890 ₽ на маркетплейсах</div>
               </div>
-              <Button size="lg" className="text-lg px-8 py-6" onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}>
+              <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-all animate-fade-in" style={{animationDelay: '0.5s'}} onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}>
                 Оформить заказ
                 <Icon name="ArrowRight" size={20} className="ml-2" />
               </Button>
             </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
-              <Carousel className="relative w-full">
+            <div className="relative animate-fade-in" style={{animationDelay: '0.2s'}}>
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl animate-pulse"></div>
+              <Carousel className="relative w-full hover:scale-[1.02] transition-transform duration-500">
                 <CarouselContent>
                   {productImages.map((image, index) => (
                     <CarouselItem key={index}>
@@ -127,16 +127,16 @@ const Index = () => {
 
       <section className="py-20">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl font-bold mb-4">О продукте</h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               Премиальный L-Карнитин для эффективного жиросжигания и повышения энергии
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-2 hover:border-primary transition-colors">
+            <Card className="border-2 hover:border-primary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in">
               <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
                   <Icon name="Zap" size={24} className="text-primary" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">850 мг Л-карнитина тартрат</h3>
@@ -145,9 +145,9 @@ const Index = () => {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 hover:border-secondary transition-colors">
+            <Card className="border-2 hover:border-secondary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.1s'}}>
               <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
                   <Icon name="Leaf" size={24} className="text-secondary" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">100% натуральные компоненты</h3>
@@ -156,9 +156,9 @@ const Index = () => {
                 </p>
               </CardContent>
             </Card>
-            <Card className="border-2 hover:border-primary transition-colors">
+            <Card className="border-2 hover:border-primary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.2s'}}>
               <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
                   <Icon name="ShieldCheck" size={24} className="text-primary" />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Без ГМО</h3>
@@ -174,12 +174,12 @@ const Index = () => {
       <section className="py-20 bg-gradient-to-b from-white to-gray-50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16">
+            <div className="text-center mb-16 animate-fade-in">
               <h2 className="text-4xl font-bold mb-4">Почему покупать у нас выгоднее?</h2>
             </div>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in">
+                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
                   <Icon name="TrendingDown" size={24} className="text-white" />
                 </div>
                 <div>
@@ -189,8 +189,8 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.1s'}}>
+                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
                   <Icon name="Truck" size={24} className="text-white" />
                 </div>
                 <div>
@@ -200,8 +200,8 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.2s'}}>
+                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
                   <Icon name="Award" size={24} className="text-white" />
                 </div>
                 <div>
@@ -211,8 +211,8 @@ const Index = () => {
                   </p>
                 </div>
               </div>
-              <div className="flex gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.3s'}}>
+                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
                   <Icon name="Package" size={24} className="text-white" />
                 </div>
                 <div>
@@ -229,18 +229,18 @@ const Index = () => {
 
       <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl font-bold mb-4">Отзывы покупателей</h2>
             <div className="flex items-center justify-center gap-2 text-yellow-500">
               {[...Array(5)].map((_, i) => (
-                <Icon key={i} name="Star" size={24} className="fill-current" />
+                <Icon key={i} name="Star" size={24} className="fill-current hover:scale-125 transition-transform" />
               ))}
               <span className="text-gray-600 ml-2">5.0 из 5 (более 200 отзывов)</span>
             </div>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {reviews.map((review, index) => (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
+              <Card key={index} className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
                 <CardContent className="pt-6">
                   <div className="flex items-center gap-2 mb-4">
                     {[...Array(review.rating)].map((_, i) => (
@@ -262,13 +262,13 @@ const Index = () => {
       <section id="order-form" className="py-20 bg-gradient-to-b from-purple-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-12">
+            <div className="text-center mb-12 animate-fade-in">
               <h2 className="text-4xl font-bold mb-4">Оформить заказ</h2>
               <p className="text-xl text-gray-600">
                 Заполните форму и мы свяжемся с вами для подтверждения
               </p>
             </div>
-            <Card className="border-2">
+            <Card className="border-2 hover:shadow-2xl transition-all duration-300 animate-fade-in" style={{animationDelay: '0.2s'}}>
               <CardContent className="pt-6">
                 <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                   <div className="space-y-2">
@@ -337,7 +337,7 @@ const Index = () => {
                       </div>
                     </div>
                   </div>
-                  <Button type="submit" size="lg" className="w-full text-lg">
+                  <Button type="submit" size="lg" className="w-full text-lg hover:scale-105 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.3s'}}>
                     Заказать за 1 990 ₽
                     <Icon name="ShoppingCart" size={20} className="ml-2" />
                   </Button>
@@ -348,7 +348,7 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-12 animate-fade-in">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
             <div>

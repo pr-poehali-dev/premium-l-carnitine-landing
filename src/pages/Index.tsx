@@ -48,13 +48,33 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white">
+      <a
+        href="https://t.me/badpoehalibot"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 group"
+        aria-label="Поддержка в Telegram"
+      >
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity animate-pulse"></div>
+          <div className="relative w-16 h-16 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+            <Icon name="MessageCircle" size={28} className="text-white" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white animate-ping"></span>
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white"></span>
+          </div>
+        </div>
+        <div className="absolute right-20 top-1/2 -translate-y-1/2 bg-gray-900 text-white px-4 py-2 rounded-lg whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+          <span className="text-sm font-medium">Нужна помощь?</span>
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full border-8 border-transparent border-l-gray-900"></div>
+        </div>
+      </a>
       <header className="border-b border-gray-100 sticky top-0 bg-white/95 backdrop-blur-sm z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="text-2xl font-bold text-primary">PharmExpert</div>
           </div>
           <a 
-            href="https://t.me/pharmexpert" 
+            href="https://t.me/badpoehalibot" 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"

@@ -6,6 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import InputMask from 'react-input-mask';
+import { AddressSuggestions } from 'react-dadata';
+import 'react-dadata/dist/react-dadata.css';
 
 const Index = () => {
   const productImages = [
@@ -24,6 +27,16 @@ const Index = () => {
     address: '',
     deliveryMethod: ''
   });
+
+  const [errors, setErrors] = useState({
+    fullName: '',
+    phone: '',
+    email: '',
+    address: '',
+    deliveryMethod: ''
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const reviews = [
     {
@@ -45,6 +58,98 @@ const Index = () => {
       date: '5 января 2026'
     }
   ];
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone: string) => {
+    const cleanPhone = phone.replace(/\D/g, '');
+    return cleanPhone.length === 11;
+  };
+
+  const validateForm = () => {
+    const newErrors = {
+      fullName: '',
+      phone: '',
+      email: '',
+      address: '',
+      deliveryMethod: ''
+    };
+
+    let isValid = true;
+
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = 'Укажите ФИО';
+      isValid = false;
+    }
+
+    if (!formData.phone) {
+      newErrors.phone = 'Укажите телефон';
+      isValid = false;
+    } else if (!validatePhone(formData.phone)) {
+      newErrors.phone = 'Неверный формат телефона';
+      isValid = false;
+    }
+
+    if (!formData.email) {
+      newErrors.email = 'Укажите email';
+      isValid = false;
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Неверный формат email';
+      isValid = false;
+    }
+
+    if (!formData.address.trim()) {
+      newErrors.address = 'Укажите адрес доставки';
+      isValid = false;
+    }
+
+    if (!formData.deliveryMethod) {
+      newErrors.deliveryMethod = 'Выберите способ доставки';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/order-api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'create_order',
+          ...formData
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.paymentUrl) {
+        window.location.href = data.paymentUrl;
+      } else {
+        alert('Ошибка создания заказа. Попробуйте еще раз.');
+        setIsSubmitting(false);
+      }
+    } catch (error) {
+      console.error('Error submitting order:', error);
+      alert('Ошибка отправки заказа. Попробуйте еще раз.');
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -181,9 +286,9 @@ const Index = () => {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
                   <Icon name="ShieldCheck" size={24} className="text-primary" />
                 </div>
-                <h3 className="text-xl font-bold mb-2">Без ГМО</h3>
+                <h3 className="text-xl font-bold mb-2">Сертифицированное производство</h3>
                 <p className="text-gray-600">
-                  Продукт прошел все необходимые проверки качества и сертификацию
+                  Все необходимые сертификаты качества и безопасности. Соответствие GMP стандартам
                 </p>
               </CardContent>
             </Card>
@@ -191,86 +296,32 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-16 animate-fade-in">
-              <h2 className="text-4xl font-bold mb-4">Почему покупать у нас выгоднее?</h2>
-            </div>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in">
-                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
-                  <Icon name="TrendingDown" size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Без наценки маркетплейсов</h3>
-                  <p className="text-gray-600">
-                    Покупая напрямую от производителя, вы экономите до 30% от цены на популярных площадках
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.1s'}}>
-                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
-                  <Icon name="Truck" size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Бесплатная доставка по РФ</h3>
-                  <p className="text-gray-600">
-                    Отправляем заказы по всей России абсолютно бесплатно любым удобным способом
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.2s'}}>
-                <div className="flex-shrink-0 w-12 h-12 bg-secondary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
-                  <Icon name="Award" size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Гарантия качества</h3>
-                  <p className="text-gray-600">
-                    Мы производители и контролируем качество на каждом этапе производства
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-4 hover:scale-105 transition-transform animate-fade-in" style={{animationDelay: '0.3s'}}>
-                <div className="flex-shrink-0 w-12 h-12 bg-primary rounded-full flex items-center justify-center hover:rotate-12 transition-transform">
-                  <Icon name="Package" size={24} className="text-white" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Всегда в наличии</h3>
-                  <p className="text-gray-600">
-                    Не нужно ждать поставок — отправляем заказы в день оформления
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 animate-fade-in">
             <h2 className="text-4xl font-bold mb-4">Отзывы покупателей</h2>
-            <div className="flex items-center justify-center gap-2 text-yellow-500">
-              {[...Array(5)].map((_, i) => (
-                <Icon key={i} name="Star" size={24} className="fill-current hover:scale-125 transition-transform" />
-              ))}
-              <span className="text-gray-600 ml-2">5.0 из 5 (более 200 отзывов)</span>
+            <div className="flex items-center justify-center gap-2">
+              <div className="flex">
+                {[...Array(5)].map((_, i) => (
+                  <Icon key={i} name="Star" size={24} className="text-yellow-400 fill-yellow-400 animate-fade-in" style={{animationDelay: `${i * 0.1}s`}} />
+                ))}
+              </div>
+              <span className="text-lg font-semibold">5.0 из 5</span>
             </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8">
             {reviews.map((review, index) => (
-              <Card key={index} className="hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+              <Card key={index} className="hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
                 <CardContent className="pt-6">
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-1 mb-3">
                     {[...Array(review.rating)].map((_, i) => (
-                      <Icon key={i} name="Star" size={16} className="fill-yellow-500 text-yellow-500" />
+                      <Icon key={i} name="Star" size={16} className="text-yellow-400 fill-yellow-400" />
                     ))}
                   </div>
-                  <p className="text-gray-700 mb-4">{review.text}</p>
-                  <div className="border-t pt-4">
-                    <div className="font-semibold">{review.name}</div>
-                    <div className="text-sm text-gray-500">{review.date}</div>
+                  <p className="text-gray-600 mb-4">{review.text}</p>
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold">{review.name}</span>
+                    <span className="text-sm text-gray-500">{review.date}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -279,88 +330,121 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="order-form" className="py-20 bg-gradient-to-b from-purple-50 to-white">
+      <section id="order-form" className="py-20 bg-gradient-to-b from-white to-purple-50">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto">
             <div className="text-center mb-12 animate-fade-in">
-              <h2 className="text-4xl font-bold mb-4">Оформить заказ</h2>
+              <h2 className="text-4xl font-bold mb-4">Оформление заказа</h2>
               <p className="text-xl text-gray-600">
-                Заполните форму и мы свяжемся с вами для подтверждения
+                Заполните форму и переходите к оплате
               </p>
             </div>
-            <Card className="border-2 hover:shadow-2xl transition-all duration-300 animate-fade-in" style={{animationDelay: '0.2s'}}>
+            <Card className="shadow-2xl hover:shadow-3xl transition-shadow animate-fade-in" style={{animationDelay: '0.1s'}}>
               <CardContent className="pt-6">
-                <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form className="space-y-6" onSubmit={handleSubmit}>
                   <div className="space-y-2">
-                    <Label htmlFor="fullName">ФИО *</Label>
-                    <Input
-                      id="fullName"
-                      placeholder="Иванов Иван Иванович"
+                    <Label htmlFor="fullName">ФИО</Label>
+                    <Input 
+                      id="fullName" 
+                      placeholder="Иванов Иван Иванович" 
                       value={formData.fullName}
-                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      required
+                      onChange={(e) => {
+                        setFormData({ ...formData, fullName: e.target.value });
+                        setErrors({ ...errors, fullName: '' });
+                      }}
+                      className={errors.fullName ? 'border-red-500' : ''}
                     />
+                    {errors.fullName && <p className="text-sm text-red-500">{errors.fullName}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="phone">Телефон *</Label>
-                    <Input
-                      id="phone"
-                      type="tel"
-                      placeholder="+7 (999) 123-45-67"
+                    <Label htmlFor="phone">Телефон</Label>
+                    <InputMask
+                      mask="+7 (999) 999-99-99"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      required
-                    />
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value });
+                        setErrors({ ...errors, phone: '' });
+                      }}
+                    >
+                      {(inputProps: any) => (
+                        <Input 
+                          {...inputProps}
+                          id="phone"
+                          type="tel"
+                          placeholder="+7 (___) ___-__-__"
+                          className={errors.phone ? 'border-red-500' : ''}
+                        />
+                      )}
+                    </InputMask>
+                    {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="email">Email *</Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="example@email.com"
+                    <Label htmlFor="email">Email</Label>
+                    <Input 
+                      id="email" 
+                      type="email" 
+                      placeholder="example@mail.ru"
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      required
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value });
+                        setErrors({ ...errors, email: '' });
+                      }}
+                      className={errors.email ? 'border-red-500' : ''}
                     />
+                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="address">Адрес доставки *</Label>
-                    <Input
-                      id="address"
-                      placeholder="Город, улица, дом, квартира"
-                      value={formData.address}
-                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                      required
+                    <Label htmlFor="address">Адрес доставки</Label>
+                    <AddressSuggestions
+                      token={import.meta.env.VITE_DADATA_API_KEY || ''}
+                      value={{ value: formData.address }}
+                      onChange={(suggestion) => {
+                        setFormData({ ...formData, address: suggestion?.value || '' });
+                        setErrors({ ...errors, address: '' });
+                      }}
+                      inputProps={{
+                        placeholder: 'Начните вводить адрес...',
+                        className: `flex h-10 w-full rounded-md border ${errors.address ? 'border-red-500' : 'border-input'} bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`
+                      }}
                     />
+                    {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="deliveryMethod">Способ доставки *</Label>
-                    <Select value={formData.deliveryMethod} onValueChange={(value) => setFormData({ ...formData, deliveryMethod: value })}>
-                      <SelectTrigger id="deliveryMethod">
+                    <Label htmlFor="deliveryMethod">Способ доставки</Label>
+                    <Select 
+                      value={formData.deliveryMethod}
+                      onValueChange={(value) => {
+                        setFormData({ ...formData, deliveryMethod: value });
+                        setErrors({ ...errors, deliveryMethod: '' });
+                      }}
+                    >
+                      <SelectTrigger className={errors.deliveryMethod ? 'border-red-500' : ''}>
                         <SelectValue placeholder="Выберите способ доставки" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="yandex">Яндекс доставка</SelectItem>
-                        <SelectItem value="ozon">Ozon доставка</SelectItem>
-                        <SelectItem value="wb">WB доставка</SelectItem>
-                        <SelectItem value="cdek">СДЭК</SelectItem>
-                        <SelectItem value="pochta">Почта РФ</SelectItem>
+                        <SelectItem value="courier">Курьер (Бесплатно)</SelectItem>
+                        <SelectItem value="pickup">Самовывоз (Бесплатно)</SelectItem>
+                        <SelectItem value="post">Почта России (Бесплатно)</SelectItem>
                       </SelectContent>
                     </Select>
+                    {errors.deliveryMethod && <p className="text-sm text-red-500">{errors.deliveryMethod}</p>}
                   </div>
-                  <div className="bg-purple-50 border border-purple-100 rounded-lg p-4">
-                    <div className="flex items-start gap-3">
-                      <Icon name="Info" size={20} className="text-purple-600 flex-shrink-0 mt-0.5" />
-                      <div className="text-sm text-purple-900">
-                        <div className="font-semibold mb-1">Бесплатная доставка по всей России</div>
-                        <div>После оформления заказа мы свяжемся с вами для подтверждения</div>
-                      </div>
+                  <div className="border-t pt-6">
+                    <div className="flex justify-between items-center mb-6">
+                      <span className="text-lg font-semibold">Итого к оплате:</span>
+                      <span className="text-3xl font-bold text-primary">1 990 ₽</span>
                     </div>
+                    <Button 
+                      type="submit" 
+                      size="lg" 
+                      className="w-full text-lg hover:scale-105 transition-all duration-300 animate-fade-in" 
+                      style={{animationDelay: '0.3s'}}
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? 'Обработка...' : 'Перейти к оплате'}
+                      {!isSubmitting && <Icon name="CreditCard" size={20} className="ml-2" />}
+                    </Button>
                   </div>
-                  <Button type="submit" size="lg" className="w-full text-lg hover:scale-105 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.3s'}}>
-                    Заказать за 1 990 ₽
-                    <Icon name="ShoppingCart" size={20} className="ml-2" />
-                  </Button>
                 </form>
               </CardContent>
             </Card>
@@ -374,31 +458,35 @@ const Index = () => {
             <div>
               <div className="text-2xl font-bold mb-4">PharmExpert</div>
               <p className="text-gray-400">
-                Производитель премиальных спортивных добавок
+                Премиум спортивное питание напрямую от производителя
               </p>
             </div>
             <div>
               <h3 className="font-bold mb-4">Контакты</h3>
               <div className="space-y-2 text-gray-400">
-                <div>Email: info@pharmexpert.ru</div>
-                <div>Телефон: +7 (800) 123-45-67</div>
+                <div className="flex items-center gap-2">
+                  <Icon name="Mail" size={16} />
+                  <span>89287730553@mail.ru</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Icon name="Send" size={16} />
+                  <a href="https://t.me/badpoehalibot" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
+                    @badpoehalibot
+                  </a>
+                </div>
               </div>
             </div>
             <div>
-              <h3 className="font-bold mb-4">Мы в соцсетях</h3>
-              <a 
-                href="https://t.me/pharmexpert" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
-              >
-                <Icon name="Send" size={20} />
-                Telegram
-              </a>
+              <h3 className="font-bold mb-4">Информация</h3>
+              <ul className="space-y-2 text-gray-400">
+                <li>Доставка по всей России</li>
+                <li>Оплата при получении</li>
+                <li>Гарантия качества</li>
+              </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm">
-            © 2026 PharmExpert. Все права защищены.
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>&copy; 2026 PharmExpert. Все права защищены.</p>
           </div>
         </div>
       </footer>

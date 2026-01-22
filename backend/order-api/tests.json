@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "Create order with valid data",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "action": "create_order",
+        "fullName": "Иван Тестов",
+        "phone": "+7 (999) 123-45-67",
+        "email": "test@example.com",
+        "address": "г Москва, ул Тестовая, д 1",
+        "deliveryMethod": "courier"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "orderId": "number"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -204,12 +204,11 @@ def create_payment(body: dict) -> dict:
     
     shop_id = os.environ.get('YOOKASSA_SHOP_ID')
     secret_key = os.environ.get('YOOKASSA_SECRET_KEY')
-    project_id = os.environ.get('AWS_ACCESS_KEY_ID')
     
     credentials = f'{shop_id}:{secret_key}'
     encoded_credentials = base64.b64encode(credentials.encode('utf-8')).decode('utf-8')
     
-    success_url = f'https://{project_id}.poehali.app/success?orderId={order_id}'
+    success_url = 'https://preview--premium-l-carnitine-landing.poehali.dev/success?orderId=' + str(order_id)
     
     payment_data = {
         'amount': {

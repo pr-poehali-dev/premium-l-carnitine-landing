@@ -13,7 +13,7 @@ const Success = () => {
     if (orderId) {
       setOrderDetails({
         id: orderId,
-        amount: 1990,
+        amount: 980,
         status: 'paid'
       });
     }
@@ -49,7 +49,7 @@ const Success = () => {
               <Icon name="CreditCard" size={24} className="text-green-600" />
               <div>
                 <p className="font-semibold">Сумма оплаты</p>
-                <p className="text-sm text-gray-600">1 990 ₽</p>
+                <p className="text-sm text-gray-600">980 ₽</p>
               </div>
             </div>
           </div>

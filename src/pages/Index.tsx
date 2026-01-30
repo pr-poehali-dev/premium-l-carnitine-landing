@@ -231,8 +231,11 @@ const Index = () => {
                 </div>
               </div>
               <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
-                <div className="text-4xl font-bold text-primary mb-2 hover:scale-105 transition-transform inline-block">1 990 ₽</div>
-                <div className="text-gray-500 line-through text-lg">2 890 ₽ на маркетплейсах</div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-4xl font-bold text-primary hover:scale-105 transition-transform inline-block">980 ₽</div>
+                  <div className="text-gray-400 line-through text-2xl">1 720 ₽</div>
+                </div>
+                <div className="text-sm text-secondary font-semibold">Скидка 43% — выгоднее маркетплейсов!</div>
               </div>
               <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-all animate-fade-in" style={{animationDelay: '0.5s'}} onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}>
                 Оформить заказ

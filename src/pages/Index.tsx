@@ -220,7 +220,11 @@ const Index = () => {
                 </div>
               </div>
               <div className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-4 animate-fade-in flex items-start gap-3" style={{animationDelay: '0.35s'}}>
-                <Icon name="ShieldCheck" size={32} className="text-blue-600 flex-shrink-0 mt-1" />
+                <img 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/files/ec7d7fe5-875f-4352-a8bd-b0dac98d1b66.jpg" 
+                  alt="Честный ЗНАК"
+                  className="w-16 h-16 object-contain flex-shrink-0"
+                />
                 <div>
                   <p className="font-bold text-blue-900 mb-1">Маркировка «Честный ЗНАК»</p>
                   <p className="text-sm text-blue-700">Каждая упаковка имеет уникальный код для проверки подлинности. Проверьте товар в приложении «Честный ЗНАК» или на сайте честныйзнак.рф</p>

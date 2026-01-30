@@ -1,0 +1,17 @@
+{
+  "tests": [
+    {
+      "name": "Get address suggestions",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "query": "Москва"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "suggestions": "array"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

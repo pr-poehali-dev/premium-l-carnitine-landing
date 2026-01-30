@@ -7,8 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Icon from '@/components/ui/icon';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import InputMask from 'react-input-mask';
-import { AddressSuggestions } from 'react-dadata';
-import 'react-dadata/dist/react-dadata.css';
+import AddressInput from '@/components/AddressInput';
 
 const Index = () => {
   const productImages = [
@@ -395,17 +394,13 @@ const Index = () => {
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="address">Адрес доставки</Label>
-                    <AddressSuggestions
-                      token={import.meta.env.VITE_DADATA_API_KEY || ''}
-                      value={{ value: formData.address }}
-                      onChange={(suggestion) => {
-                        setFormData({ ...formData, address: suggestion?.value || '' });
+                    <AddressInput
+                      value={formData.address}
+                      onChange={(value) => {
+                        setFormData({ ...formData, address: value });
                         setErrors({ ...errors, address: '' });
                       }}
-                      inputProps={{
-                        placeholder: 'Начните вводить адрес...',
-                        className: `flex h-10 w-full rounded-md border ${errors.address ? 'border-red-500' : 'border-input'} bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50`
-                      }}
+                      error={errors.address}
                     />
                     {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
                   </div>

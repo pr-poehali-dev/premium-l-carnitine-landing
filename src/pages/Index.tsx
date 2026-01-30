@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -36,6 +36,33 @@ const Index = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const endOfDay = new Date();
+      endOfDay.setHours(23, 59, 59, 999);
+      const difference = endOfDay.getTime() - now.getTime();
+
+      if (difference > 0) {
+        return {
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60)
+        };
+      }
+      return { hours: 0, minutes: 0, seconds: 0 };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const reviews = [
     {
@@ -230,12 +257,31 @@ const Index = () => {
                   <p className="text-sm text-blue-700">Каждая упаковка имеет уникальный код для проверки подлинности. Проверьте товар в приложении «Честный ЗНАК» или на сайте честныйзнак.рф</p>
                 </div>
               </div>
-              <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="text-4xl font-bold text-primary hover:scale-105 transition-transform inline-block">980 ₽</div>
-                  <div className="text-gray-400 line-through text-2xl">1 720 ₽</div>
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-xl p-5 animate-fade-in" style={{animationDelay: '0.35s'}}>
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon name="Clock" size={20} className="text-red-600 animate-pulse" />
+                  <span className="text-sm font-bold text-red-600 uppercase">Акция заканчивается через:</span>
                 </div>
-                <div className="text-sm text-secondary font-semibold">Скидка 43% — выгоднее маркетплейсов!</div>
+                <div className="flex gap-3 mb-4">
+                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
+                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.hours).padStart(2, '0')}</div>
+                    <div className="text-xs text-gray-600 mt-1">часов</div>
+                  </div>
+                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
+                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.minutes).padStart(2, '0')}</div>
+                    <div className="text-xs text-gray-600 mt-1">минут</div>
+                  </div>
+                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
+                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.seconds).padStart(2, '0')}</div>
+                    <div className="text-xs text-gray-600 mt-1">секунд</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="text-4xl font-bold text-primary">980 ₽</div>
+                  <div className="text-gray-400 line-through text-2xl">1 720 ₽</div>
+                  <div className="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">-43%</div>
+                </div>
+                <div className="text-sm text-red-700 font-semibold">⚡ После окончания акции цена вернется к 1 720 ₽</div>
               </div>
               <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-all animate-fade-in" style={{animationDelay: '0.5s'}} onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}>
                 Оформить заказ

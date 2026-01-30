@@ -417,9 +417,11 @@ const Index = () => {
                         <SelectValue placeholder="Выберите способ доставки" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="courier">Курьер (Бесплатно)</SelectItem>
-                        <SelectItem value="pickup">Самовывоз (Бесплатно)</SelectItem>
-                        <SelectItem value="post">Почта России (Бесплатно)</SelectItem>
+                        <SelectItem value="yandex">Яндекс доставка</SelectItem>
+                        <SelectItem value="ozon">Озон доставка</SelectItem>
+                        <SelectItem value="wb">WB доставка</SelectItem>
+                        <SelectItem value="cdek">СДЭК</SelectItem>
+                        <SelectItem value="pochta">Почта РФ</SelectItem>
                       </SelectContent>
                     </Select>
                     {errors.deliveryMethod && <p className="text-sm text-red-500">{errors.deliveryMethod}</p>}

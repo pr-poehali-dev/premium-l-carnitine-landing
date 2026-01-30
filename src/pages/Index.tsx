@@ -125,7 +125,7 @@ const Index = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('/api/order-api', {
+      const response = await fetch('https://functions.poehali.dev/6adc7c19-ffac-4feb-96ab-51151c26071f', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -221,9 +221,9 @@ const Index = () => {
               </div>
               <div className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-4 animate-fade-in flex items-start gap-3" style={{animationDelay: '0.35s'}}>
                 <img 
-                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/f3a5b82f-1b71-487b-a653-8ab322a88fc5.png" 
+                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/5001653f-fa87-498e-843d-f11310a0aa4c.png" 
                   alt="Честный ЗНАК"
-                  className="w-32 h-auto object-contain flex-shrink-0"
+                  className="w-40 h-auto object-contain flex-shrink-0"
                 />
                 <div>
                   <p className="font-bold text-blue-900 mb-1">Маркировка «Честный ЗНАК»</p>

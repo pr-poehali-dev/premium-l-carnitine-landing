@@ -136,11 +136,14 @@ const Index = () => {
       });
 
       const data = await response.json();
+      
+      console.log('Response status:', response.status);
+      console.log('Response data:', data);
 
       if (data.success && data.paymentUrl) {
         window.location.href = data.paymentUrl;
       } else {
-        alert('Ошибка создания заказа. Попробуйте еще раз.');
+        alert(`Ошибка создания заказа: ${data.error || 'Попробуйте еще раз'}`);
         setIsSubmitting(false);
       }
     } catch (error) {

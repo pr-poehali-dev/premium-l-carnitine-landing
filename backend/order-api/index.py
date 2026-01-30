@@ -257,8 +257,13 @@ def create_payment(body: dict) -> dict:
         method='POST'
     )
     
-    with urllib.request.urlopen(req) as response:
-        payment_response = json.loads(response.read().decode('utf-8'))
+    try:
+        with urllib.request.urlopen(req) as response:
+            payment_response = json.loads(response.read().decode('utf-8'))
+    except urllib.error.HTTPError as e:
+        error_body = e.read().decode('utf-8')
+        print(f'YooKassa error: {e.code} - {error_body}')
+        return {'error': f'ЮKassa ошибка: {error_body}', 'status': 500}
     
     payment_id = payment_response.get('id')
     payment_url = payment_response.get('confirmation', {}).get('confirmation_url')

@@ -127,7 +127,7 @@ def create_order(body: dict) -> dict:
     email = body.get('email', '').strip()
     address = body.get('address', '').strip()
     delivery_method = body.get('deliveryMethod', '').strip()
-    amount = 1990.00
+    amount = 1.00
     
     if not all([full_name, phone, email, address, delivery_method]):
         return {'error': 'Все поля обязательны для заполнения', 'status': 400}

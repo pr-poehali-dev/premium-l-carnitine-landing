@@ -219,6 +219,13 @@ const Index = () => {
                   <span>Без ГМО</span>
                 </div>
               </div>
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-4 animate-fade-in flex items-start gap-3" style={{animationDelay: '0.35s'}}>
+                <Icon name="ShieldCheck" size={32} className="text-blue-600 flex-shrink-0 mt-1" />
+                <div>
+                  <p className="font-bold text-blue-900 mb-1">Маркировка «Честный ЗНАК»</p>
+                  <p className="text-sm text-blue-700">Каждая упаковка имеет уникальный код для проверки подлинности. Проверьте товар в приложении «Честный ЗНАК» или на сайте честныйзнак.рф</p>
+                </div>
+              </div>
               <div className="pt-4 animate-fade-in" style={{animationDelay: '0.4s'}}>
                 <div className="text-4xl font-bold text-primary mb-2 hover:scale-105 transition-transform inline-block">1 990 ₽</div>
                 <div className="text-gray-500 line-through text-lg">2 890 ₽ на маркетплейсах</div>

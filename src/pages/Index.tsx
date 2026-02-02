@@ -1,13 +1,7 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Icon from '@/components/ui/icon';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import InputMask from 'react-input-mask';
-import AddressInput from '@/components/AddressInput';
+import HeroSection from '@/components/HeroSection';
+import OrderForm from '@/components/OrderForm';
+import ReviewsSection from '@/components/ReviewsSection';
 
 const Index = () => {
   const productImages = [
@@ -18,171 +12,6 @@ const Index = () => {
     'https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/b574e11d-ee86-4b6f-8ae7-c2809900c8b1.png',
     'https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/05e3950f-afa6-4d20-b683-bc378ebdd17a.png'
   ];
-
-  const [formData, setFormData] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    address: '',
-    deliveryMethod: '',
-    quantity: 1
-  });
-
-  const PRICE_PER_ITEM = 980;
-  const totalPrice = formData.quantity * PRICE_PER_ITEM;
-
-  const [errors, setErrors] = useState({
-    fullName: '',
-    phone: '',
-    email: '',
-    address: '',
-    deliveryMethod: ''
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const now = new Date();
-      const endOfDay = new Date();
-      endOfDay.setHours(23, 59, 59, 999);
-      const difference = endOfDay.getTime() - now.getTime();
-
-      if (difference > 0) {
-        return {
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60)
-        };
-      }
-      return { hours: 0, minutes: 0, seconds: 0 };
-    };
-
-    setTimeLeft(calculateTimeLeft());
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const reviews = [
-    {
-      name: 'Анна Петрова',
-      rating: 5,
-      text: 'Отличный продукт! Энергии стало намного больше, тренировки проходят эффективнее. Качество на высоте.',
-      date: '15 января 2026'
-    },
-    {
-      name: 'Дмитрий Соколов',
-      rating: 5,
-      text: 'Заказываю уже третий раз. Результат заметен через неделю приема. Рекомендую!',
-      date: '10 января 2026'
-    },
-    {
-      name: 'Елена Иванова',
-      rating: 5,
-      text: 'Покупала на маркетплейсе дороже на 30%. Здесь выгоднее и доставка быстрая. Спасибо!',
-      date: '5 января 2026'
-    }
-  ];
-
-  const validateEmail = (email: string) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePhone = (phone: string) => {
-    const cleanPhone = phone.replace(/\D/g, '');
-    return cleanPhone.length === 11;
-  };
-
-  const validateForm = () => {
-    const newErrors = {
-      fullName: '',
-      phone: '',
-      email: '',
-      address: '',
-      deliveryMethod: ''
-    };
-
-    let isValid = true;
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = 'Укажите ФИО';
-      isValid = false;
-    }
-
-    if (!formData.phone) {
-      newErrors.phone = 'Укажите телефон';
-      isValid = false;
-    } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = 'Неверный формат телефона';
-      isValid = false;
-    }
-
-    if (!formData.email) {
-      newErrors.email = 'Укажите email';
-      isValid = false;
-    } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Неверный формат email';
-      isValid = false;
-    }
-
-    if (!formData.address.trim()) {
-      newErrors.address = 'Укажите адрес доставки';
-      isValid = false;
-    }
-
-    if (!formData.deliveryMethod) {
-      newErrors.deliveryMethod = 'Выберите способ доставки';
-      isValid = false;
-    }
-
-    setErrors(newErrors);
-    return isValid;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch('https://functions.poehali.dev/6adc7c19-ffac-4feb-96ab-51151c26071f', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          action: 'create_order',
-          ...formData
-        })
-      });
-
-      const data = await response.json();
-      
-      console.log('Response status:', response.status);
-      console.log('Response data:', data);
-
-      if (data.success && data.paymentUrl) {
-        window.location.href = data.paymentUrl;
-      } else {
-        alert(`Ошибка создания заказа: ${data.error || 'Попробуйте еще раз'}`);
-        setIsSubmitting(false);
-      }
-    } catch (error) {
-      console.error('Error submitting order:', error);
-      alert('Ошибка отправки заказа. Попробуйте еще раз.');
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -223,339 +52,39 @@ const Index = () => {
         </div>
       </header>
 
-      <section className="py-20 bg-gradient-to-b from-purple-50 to-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6 animate-fade-in">
-              <div className="inline-block px-4 py-2 bg-secondary/10 text-secondary rounded-full text-sm font-semibold animate-fade-in hover:scale-105 transition-transform">
-                Напрямую от производителя
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold leading-tight animate-fade-in" style={{animationDelay: '0.1s'}}>
-                L-Карнитин премиум качества
-              </h1>
-              <p className="text-xl text-gray-600 animate-fade-in" style={{animationDelay: '0.2s'}}>
-                Покупайте выгоднее, чем на маркетплейсах. <span className="font-semibold text-secondary">Бесплатная доставка</span> по всей России.
-              </p>
-              <div className="flex flex-wrap gap-4 text-sm animate-fade-in" style={{animationDelay: '0.3s'}}>
-                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
-                  <Icon name="Check" size={20} className="text-secondary" />
-                  <span>850 мг в порции</span>
-                </div>
-                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
-                  <Icon name="Check" size={20} className="text-secondary" />
-                  <span>120 капсул</span>
-                </div>
-                <div className="flex items-center gap-2 hover:scale-110 transition-transform">
-                  <Icon name="Check" size={20} className="text-secondary" />
-                  <span>Без ГМО</span>
-                </div>
-              </div>
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 border-2 border-blue-300 rounded-xl p-4 animate-fade-in flex items-start gap-3" style={{animationDelay: '0.35s'}}>
-                <img 
-                  src="https://cdn.poehali.dev/projects/b656551a-4437-4096-9803-a7d4bffb75c0/bucket/5001653f-fa87-498e-843d-f11310a0aa4c.png" 
-                  alt="Честный ЗНАК"
-                  className="w-40 h-auto object-contain flex-shrink-0"
-                />
-                <div>
-                  <p className="font-bold text-blue-900 mb-1">Маркировка «Честный ЗНАК»</p>
-                  <p className="text-sm text-blue-700">Каждая упаковка имеет уникальный код для проверки подлинности. Проверьте товар в приложении «Честный ЗНАК» или на сайте честныйзнак.рф</p>
-                </div>
-              </div>
-              <div className="bg-gradient-to-r from-red-50 to-orange-50 border-2 border-red-300 rounded-xl p-5 animate-fade-in" style={{animationDelay: '0.35s'}}>
-                <div className="flex items-center gap-2 mb-3">
-                  <Icon name="Clock" size={20} className="text-red-600 animate-pulse" />
-                  <span className="text-sm font-bold text-red-600 uppercase">Акция заканчивается через:</span>
-                </div>
-                <div className="flex gap-3 mb-4">
-                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
-                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.hours).padStart(2, '0')}</div>
-                    <div className="text-xs text-gray-600 mt-1">часов</div>
-                  </div>
-                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
-                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.minutes).padStart(2, '0')}</div>
-                    <div className="text-xs text-gray-600 mt-1">минут</div>
-                  </div>
-                  <div className="bg-white rounded-lg px-4 py-3 text-center min-w-[70px] shadow-md">
-                    <div className="text-3xl font-bold text-red-600">{String(timeLeft.seconds).padStart(2, '0')}</div>
-                    <div className="text-xs text-gray-600 mt-1">секунд</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="text-4xl font-bold text-primary">980 ₽</div>
-                  <div className="text-gray-400 line-through text-2xl">1 720 ₽</div>
-                  <div className="bg-red-500 text-white text-sm font-bold px-3 py-1 rounded-full">-43%</div>
-                </div>
-                <div className="text-sm text-red-700 font-semibold">⚡ После окончания акции цена вернется к 1 720 ₽</div>
-              </div>
-              <Button size="lg" className="text-lg px-8 py-6 hover:scale-105 transition-all animate-fade-in" style={{animationDelay: '0.5s'}} onClick={() => document.getElementById('order-form')?.scrollIntoView({ behavior: 'smooth' })}>
-                Оформить заказ
-                <Icon name="ArrowRight" size={20} className="ml-2" />
-              </Button>
-            </div>
-            <div className="relative animate-fade-in" style={{animationDelay: '0.2s'}}>
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-3xl blur-3xl animate-pulse"></div>
-              <Carousel className="relative w-full hover:scale-[1.02] transition-transform duration-500">
-                <CarouselContent>
-                  {productImages.map((image, index) => (
-                    <CarouselItem key={index}>
-                      <div className="p-1">
-                        <img 
-                          src={image}
-                          alt={`L-Карнитин PharmExpert - фото ${index + 1}`}
-                          className="w-full rounded-2xl shadow-2xl"
-                        />
-                      </div>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="left-4" />
-                <CarouselNext className="right-4" />
-              </Carousel>
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection productImages={productImages} />
 
-      <section className="py-20">
+      <section className="py-20 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold mb-4">О продукте</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Премиальный L-Карнитин для эффективного жиросжигания и повышения энергии
-            </p>
-          </div>
+          <h2 className="text-4xl font-bold text-center mb-12 animate-fade-in">Преимущества продукта</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="border-2 hover:border-primary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in">
-              <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
-                  <Icon name="Zap" size={24} className="text-primary" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">850 мг Л-карнитина тартрат</h3>
-                <p className="text-gray-600">
-                  Оптимальная дозировка для максимальной эффективности в каждой порции
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-2 hover:border-secondary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.1s'}}>
-              <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
-                  <Icon name="Leaf" size={24} className="text-secondary" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">100% натуральные компоненты</h3>
-                <p className="text-gray-600">
-                  Без искусственных добавок, красителей и консервантов. Только природные ингредиенты
-                </p>
-              </CardContent>
-            </Card>
-            <Card className="border-2 hover:border-primary hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: '0.2s'}}>
-              <CardContent className="pt-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4 hover:scale-110 hover:rotate-12 transition-transform">
-                  <Icon name="ShieldCheck" size={24} className="text-primary" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">Сертифицированное производство</h3>
-                <p className="text-gray-600">
-                  Все необходимые сертификаты качества и безопасности. Соответствие GMP стандартам
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16 animate-fade-in">
-            <h2 className="text-4xl font-bold mb-4">Отзывы покупателей</h2>
-            <div className="flex items-center justify-center gap-2">
-              <div className="flex">
-                {[...Array(5)].map((_, i) => (
-                  <Icon key={i} name="Star" size={24} className="text-yellow-400 fill-yellow-400 animate-fade-in" style={{animationDelay: `${i * 0.1}s`}} />
-                ))}
+            <div className="text-center space-y-4 p-6 rounded-lg hover:shadow-xl transition-shadow animate-fade-in">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
+                <Icon name="Zap" size={32} className="text-primary" />
               </div>
-              <span className="text-lg font-semibold">5.0 из 5</span>
+              <h3 className="text-xl font-bold">Максимальная эффективность</h3>
+              <p className="text-gray-600">850мг чистого L-карнитина в каждой порции для достижения результата</p>
             </div>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {reviews.map((review, index) => (
-              <Card key={index} className="hover:shadow-xl hover:-translate-y-2 transition-all duration-300 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-1 mb-3">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <Icon key={i} name="Star" size={16} className="text-yellow-400 fill-yellow-400" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 mb-4">{review.text}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="font-semibold">{review.name}</span>
-                    <span className="text-sm text-gray-500">{review.date}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+            <div className="text-center space-y-4 p-6 rounded-lg hover:shadow-xl transition-shadow animate-fade-in" style={{animationDelay: '0.1s'}}>
+              <div className="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto">
+                <Icon name="Award" size={32} className="text-secondary" />
+              </div>
+              <h3 className="text-xl font-bold">Премиум качество</h3>
+              <p className="text-gray-600">Произведено в России по стандартам GMP, сертифицировано</p>
+            </div>
+            <div className="text-center space-y-4 p-6 rounded-lg hover:shadow-xl transition-shadow animate-fade-in" style={{animationDelay: '0.2s'}}>
+              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                <Icon name="Leaf" size={32} className="text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold">Натуральный состав</h3>
+              <p className="text-gray-600">Без ГМО, искусственных красителей и консервантов</p>
+            </div>
           </div>
         </div>
       </section>
 
-      <section id="order-form" className="py-20 bg-gradient-to-b from-white to-purple-50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-12 animate-fade-in">
-              <h2 className="text-4xl font-bold mb-4">Оформление заказа</h2>
-              <p className="text-xl text-gray-600">
-                Заполните форму и переходите к оплате
-              </p>
-            </div>
-            <Card className="shadow-2xl hover:shadow-3xl transition-shadow animate-fade-in" style={{animationDelay: '0.1s'}}>
-              <CardContent className="pt-6">
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">ФИО</Label>
-                    <Input 
-                      id="fullName" 
-                      placeholder="Иванов Иван Иванович" 
-                      value={formData.fullName}
-                      onChange={(e) => {
-                        setFormData({ ...formData, fullName: e.target.value });
-                        setErrors({ ...errors, fullName: '' });
-                      }}
-                      className={errors.fullName ? 'border-red-500' : ''}
-                    />
-                    {errors.fullName && <p className="text-sm text-red-500">{errors.fullName}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone">Телефон</Label>
-                    <InputMask
-                      mask="+7 (999) 999-99-99"
-                      value={formData.phone}
-                      onChange={(e) => {
-                        setFormData({ ...formData, phone: e.target.value });
-                        setErrors({ ...errors, phone: '' });
-                      }}
-                    >
-                      {(inputProps: any) => (
-                        <Input 
-                          {...inputProps}
-                          id="phone"
-                          type="tel"
-                          placeholder="+7 (___) ___-__-__"
-                          className={errors.phone ? 'border-red-500' : ''}
-                        />
-                      )}
-                    </InputMask>
-                    {errors.phone && <p className="text-sm text-red-500">{errors.phone}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <Input 
-                      id="email" 
-                      type="email" 
-                      placeholder="example@mail.ru"
-                      value={formData.email}
-                      onChange={(e) => {
-                        setFormData({ ...formData, email: e.target.value });
-                        setErrors({ ...errors, email: '' });
-                      }}
-                      className={errors.email ? 'border-red-500' : ''}
-                    />
-                    {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="address">Адрес доставки</Label>
-                    <AddressInput
-                      value={formData.address}
-                      onChange={(value) => {
-                        setFormData({ ...formData, address: value });
-                        setErrors({ ...errors, address: '' });
-                      }}
-                      error={errors.address}
-                    />
-                    {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="quantity">Количество упаковок</Label>
-                    <div className="flex items-center gap-3">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setFormData({ ...formData, quantity: Math.max(1, formData.quantity - 1) })}
-                        disabled={formData.quantity <= 1}
-                      >
-                        <Icon name="Minus" size={16} />
-                      </Button>
-                      <Input
-                        id="quantity"
-                        type="number"
-                        min="1"
-                        value={formData.quantity}
-                        onChange={(e) => setFormData({ ...formData, quantity: Math.max(1, parseInt(e.target.value) || 1) })}
-                        className="text-center text-lg font-semibold w-24"
-                      />
-                      <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => setFormData({ ...formData, quantity: formData.quantity + 1 })}
-                      >
-                        <Icon name="Plus" size={16} />
-                      </Button>
-                      <span className="text-sm text-gray-600">× {PRICE_PER_ITEM} ₽</span>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="deliveryMethod">Способ доставки</Label>
-                    <Select 
-                      value={formData.deliveryMethod}
-                      onValueChange={(value) => {
-                        setFormData({ ...formData, deliveryMethod: value });
-                        setErrors({ ...errors, deliveryMethod: '' });
-                      }}
-                    >
-                      <SelectTrigger className={errors.deliveryMethod ? 'border-red-500' : ''}>
-                        <SelectValue placeholder="Выберите способ доставки" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="yandex">Яндекс доставка</SelectItem>
-                        <SelectItem value="ozon">Озон доставка</SelectItem>
-                        <SelectItem value="wb">WB доставка</SelectItem>
-                        <SelectItem value="cdek">СДЭК</SelectItem>
-                        <SelectItem value="pochta">Почта РФ</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.deliveryMethod && <p className="text-sm text-red-500">{errors.deliveryMethod}</p>}
-                  </div>
-                  <div className="border-t pt-6">
-                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 mb-6">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-600">Стоимость товара ({formData.quantity} шт.):</span>
-                        <span className="text-lg font-semibold">{totalPrice.toLocaleString('ru-RU')} ₽</span>
-                      </div>
-                      <div className="flex justify-between items-center mb-3">
-                        <span className="text-sm text-gray-600">Доставка:</span>
-                        <span className="text-sm text-green-600 font-semibold">Бесплатно</span>
-                      </div>
-                      <div className="border-t pt-3 flex justify-between items-center">
-                        <span className="text-lg font-bold">Итого к оплате:</span>
-                        <span className="text-3xl font-bold text-primary">{totalPrice.toLocaleString('ru-RU')} ₽</span>
-                      </div>
-                    </div>
-                    <Button 
-                      type="submit" 
-                      size="lg" 
-                      className="w-full text-lg hover:scale-105 transition-all duration-300 animate-fade-in" 
-                      style={{animationDelay: '0.3s'}}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Обработка...' : 'Перейти к оплате'}
-                      {!isSubmitting && <Icon name="CreditCard" size={20} className="ml-2" />}
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
+      <ReviewsSection />
+      <OrderForm />
 
       <footer className="bg-gray-900 text-white py-12 animate-fade-in">
         <div className="container mx-auto px-4">
@@ -576,18 +105,17 @@ const Index = () => {
                 <div className="flex items-center gap-2">
                   <Icon name="Send" size={16} />
                   <a href="https://t.me/badpoehalibot" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                    @badpoehalibot
+                    Telegram поддержка
                   </a>
                 </div>
               </div>
             </div>
             <div>
               <h3 className="font-bold mb-4">Информация</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li>Доставка по всей России</li>
-                <li>Оплата при получении</li>
-                <li>Гарантия качества</li>
-              </ul>
+              <div className="space-y-2 text-gray-400">
+                <p>ИНН: 616310964327</p>
+                <p>ОГРНИП: 323619600134180</p>
+              </div>
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">

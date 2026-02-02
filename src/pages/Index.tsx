@@ -24,8 +24,12 @@ const Index = () => {
     phone: '',
     email: '',
     address: '',
-    deliveryMethod: ''
+    deliveryMethod: '',
+    quantity: 1
   });
+
+  const PRICE_PER_ITEM = 980;
+  const totalPrice = formData.quantity * PRICE_PER_ITEM;
 
   const [errors, setErrors] = useState({
     fullName: '',
@@ -468,6 +472,37 @@ const Index = () => {
                     {errors.address && <p className="text-sm text-red-500">{errors.address}</p>}
                   </div>
                   <div className="space-y-2">
+                    <Label htmlFor="quantity">Количество упаковок</Label>
+                    <div className="flex items-center gap-3">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setFormData({ ...formData, quantity: Math.max(1, formData.quantity - 1) })}
+                        disabled={formData.quantity <= 1}
+                      >
+                        <Icon name="Minus" size={16} />
+                      </Button>
+                      <Input
+                        id="quantity"
+                        type="number"
+                        min="1"
+                        value={formData.quantity}
+                        onChange={(e) => setFormData({ ...formData, quantity: Math.max(1, parseInt(e.target.value) || 1) })}
+                        className="text-center text-lg font-semibold w-24"
+                      />
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setFormData({ ...formData, quantity: formData.quantity + 1 })}
+                      >
+                        <Icon name="Plus" size={16} />
+                      </Button>
+                      <span className="text-sm text-gray-600">× {PRICE_PER_ITEM} ₽</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
                     <Label htmlFor="deliveryMethod">Способ доставки</Label>
                     <Select 
                       value={formData.deliveryMethod}
@@ -490,9 +525,19 @@ const Index = () => {
                     {errors.deliveryMethod && <p className="text-sm text-red-500">{errors.deliveryMethod}</p>}
                   </div>
                   <div className="border-t pt-6">
-                    <div className="flex justify-between items-center mb-6">
-                      <span className="text-lg font-semibold">Итого к оплате:</span>
-                      <span className="text-3xl font-bold text-primary">1 990 ₽</span>
+                    <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 mb-6">
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-sm text-gray-600">Стоимость товара ({formData.quantity} шт.):</span>
+                        <span className="text-lg font-semibold">{totalPrice.toLocaleString('ru-RU')} ₽</span>
+                      </div>
+                      <div className="flex justify-between items-center mb-3">
+                        <span className="text-sm text-gray-600">Доставка:</span>
+                        <span className="text-sm text-green-600 font-semibold">Бесплатно</span>
+                      </div>
+                      <div className="border-t pt-3 flex justify-between items-center">
+                        <span className="text-lg font-bold">Итого к оплате:</span>
+                        <span className="text-3xl font-bold text-primary">{totalPrice.toLocaleString('ru-RU')} ₽</span>
+                      </div>
                     </div>
                     <Button 
                       type="submit" 

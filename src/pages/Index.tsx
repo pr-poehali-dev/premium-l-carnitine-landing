@@ -85,44 +85,6 @@ const Index = () => {
 
       <ReviewsSection />
       <OrderForm />
-
-      <footer className="bg-gray-900 text-white py-12 animate-fade-in">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-3 gap-8">
-            <div>
-              <div className="text-2xl font-bold mb-4">PharmExpert</div>
-              <p className="text-gray-400">
-                Премиум спортивное питание напрямую от производителя
-              </p>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Контакты</h3>
-              <div className="space-y-2 text-gray-400">
-                <div className="flex items-center gap-2">
-                  <Icon name="Mail" size={16} />
-                  <span>89287730553@mail.ru</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Icon name="Send" size={16} />
-                  <a href="https://t.me/badpoehalibot" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                    Telegram поддержка
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <h3 className="font-bold mb-4">Информация</h3>
-              <div className="space-y-2 text-gray-400">
-                <p>ИНН: 616310964327</p>
-                <p>ОГРНИП: 323619600134180</p>
-              </div>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2026 PharmExpert. Все права защищены.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
